@@ -39,8 +39,9 @@ Build **one unit**; repeat for the second walkie.
 
 | Part | Purpose |
 |------|---------|
-| 4.7 µF capacitor in series with D9 → PAM8403 LIN | Reduces speaker hiss |
+| 4.7 µF capacitor in series with D9 → PAM8403 LIN (or jack) | Reduces speaker hiss |
 | Short wire antennas | Already on most nRF24 PA/LNA boards |
+| TRRS / 3.5 mm jack breakout | Use earbuds or AUX speakers without PAM8403 (see wiring below) |
 
 ## Pin map (both units — identical wiring)
 
@@ -117,6 +118,30 @@ Build **one unit**; repeat for the second walkie.
 | L+ / L− | Speaker |
 
 > Do **not** connect the speaker to Arduino GND. Only across L+ and L−.
+
+### No amplifier or speaker module? Use a 3.5 mm jack
+
+**Don’t worry if you don’t have a PAM8403 or a loose speaker** — you can still listen with **earbuds, a headset, or any speaker that has a 3.5 mm plug**.
+
+Use a **TRRS jack breakout** (or solder a panel socket) and wire audio from **D9** like this:
+
+```text
+D9 ──[ 220 Ω ]──┬── TIP
+                └── RING1     (mono in both ears on stereo headphones)
+SLEEVE ─────────── GND
+RING2 ──────────── GND        (if your breakout has RING2 — tie to GND)
+```
+
+| Jack pin | Connect to |
+|----------|------------|
+| **TIP** | D9 through **220 Ω** |
+| **RING1** | Same node as TIP (optional — stereo earbuds) |
+| **SLEEVE** | **GND** |
+| **RING2** | **GND** (TRRS breakouts — CTIA wiring) |
+
+**TRS plug (3-pole AUX cable):** use **TIP** + **220 Ω** from D9; **SLEEVE** to GND. You can jumper **RING** to TIP for both channels.
+
+> This is a simple **direct PWM** path — **quieter** than PAM8403 and not hi-fi, but fine for testing and casual use. A **PAM8403** (or powered speakers) still gives the best volume and clarity. Optional: **4.7 µF in series** between D9 and the resistor for less hiss.
 
 ### Buttons (internal pull-ups enabled in firmware)
 
